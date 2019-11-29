@@ -4,17 +4,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.type.BigDecimalType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,10 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Employee.DataEmployee.model.Karyawan;
 import com.Employee.DataEmployee.model.Parameter;
 import com.Employee.DataEmployee.model.Pendapatan;
-import com.Employee.DataEmployee.model.Penempatan;
 import com.Employee.DataEmployee.model.PresentaseGaji;
 import com.Employee.DataEmployee.model.TunjanganPegawai;
-
 import com.Employee.DataEmployee.repository.KaryawanRepository;
 import com.Employee.DataEmployee.repository.ParameterRepository;
 import com.Employee.DataEmployee.repository.PendapatanRepository;
@@ -34,30 +29,36 @@ import com.Employee.DataEmployee.repository.PenempatanRepository;
 import com.Employee.DataEmployee.repository.PresentaseGajiRepository;
 import com.Employee.DataEmployee.repository.TunjanganPegawaiRepository;
 
-import Model_DTO.PendapatanDTO;
-
 @RestController
 @RequestMapping("/calculationPendapatan")
 public class CalculationSalaryController {
 	
 	@Autowired
     PendapatanRepository pendapatanRepository;
+	
 	@Autowired
 	KaryawanRepository karyawanRepository;
+	
 	@Autowired
 	PresentaseGajiRepository presentaseGajiRepository;
+	
 	@Autowired
 	PenempatanRepository penempatanRepository;
+	
 	@Autowired
 	ParameterRepository parameterRepository;
+	
 	@Autowired
 	TunjanganPegawaiRepository tunjanganPegawaiRepository;
 	
+    ModelMapper modelMapper = new ModelMapper();
+	
 	//Perhitungan Pendapatan
-	@PostMapping("/calculation/{tanggal}")
+	@PostMapping("/calculation/{date}")
     public Map<String, Object> calculationPendapatan(@PathVariable("date") String inputDate){
 		
 		Map<String, Object> result = new HashMap<String,Object>();
+		Map<String, Object> result2 = new HashMap<String, Object>();
 		List<Pendapatan> listPendapatan = pendapatanRepository.findAll();
 		
         LocalDate myDate =LocalDate.parse(inputDate);
@@ -83,10 +84,10 @@ public class CalculationSalaryController {
 			}
 		}
 		
-		
+	
 		result.put("Status", 200);
         result.put("message", "Update Salary Data Success");
-        result.put("Data", result);
+        result.put("Data", result2);
         
     	return result;
     }
@@ -110,6 +111,13 @@ public class CalculationSalaryController {
 		
 		for (Karyawan karyawan : listKaryawan) {
 			Pendapatan pendapatanTemp = new Pendapatan();
+			
+			 	System.out.println("+++++++++++++++++++++++++++++++++++");
+	            System.out.println("Nama      	: " + karyawan.getNama());
+	            System.out.println("Posisi   	: " + karyawan.getPosisi().getNamaPosisi());
+	            System.out.println("Tingkat   	: " + karyawan.getTingkatan().getNamaTingkatan());
+	            System.out.println("Masa kerja 	: " + karyawan.getMasaKerja());
+			
 			if (pendapatan.getKaryawan() == karyawan) {
 				pendapatanTemp = inputPendapatan(karyawan, date);
 				pendapatanTemp.setIdPendapatan(pendapatan.getIdPendapatan());
@@ -125,8 +133,8 @@ public class CalculationSalaryController {
 		
 		Pendapatan pendapatan = new Pendapatan();
 		BigDecimal finalPresentaseGaji = new BigDecimal(0), umkPenempatan;
-		BigDecimal setKosong = new BigDecimal(0);
-		int setKosongInteger = 0;
+		BigDecimal bigDecimal = new BigDecimal(0);
+		int jumlah = 0;
 		
 		umkPenempatan = karyawan.getPenempatan().getUmkPenempatan();
 		finalPresentaseGaji = calculationPresentaseGaji(karyawan);
@@ -138,13 +146,13 @@ public class CalculationSalaryController {
 		pendapatan.setTunjanganPegawai(calculationTunjanganPegawai(karyawan));
 		pendapatan.setTunjanganTransport(calculationTunjanganTransport(karyawan));
 		pendapatan.setGajiKotor(calculationGajiKotor(pendapatan));
-		pendapatan.setPphPerbulan(setKosong);
+		pendapatan.setPphPerbulan(bigDecimal);
 		pendapatan.setBpjs(calculationBPJS(pendapatan.getGajiPokok()));
 		pendapatan.setGajiBersih(calculationGajiBersih(pendapatan));
-		pendapatan.setLamaLembur(setKosongInteger);
-		pendapatan.setUangLembur(setKosong);
-		pendapatan.setVariableBonus(setKosongInteger);
-		pendapatan.setUangBonus(setKosong);
+		pendapatan.setLamaLembur(jumlah);
+		pendapatan.setUangLembur(bigDecimal);
+		pendapatan.setVariableBonus(jumlah);
+		pendapatan.setUangBonus(bigDecimal);
 		pendapatan.setTakeHomePay(calculationTakeHomePay(pendapatan));
 		
 		return pendapatan;	
