@@ -50,7 +50,6 @@ public class PendapatanController {
 		
 		result.put("Status", 200);
     	result.put("message", "Read All Data Income Success");
-    	
     	result.put("Data", listPendapatanDTO);
     	
     	return result;

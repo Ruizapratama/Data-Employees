@@ -132,16 +132,16 @@ public class CalculationSalaryController {
 	public Pendapatan inputPendapatan(Karyawan karyawan, Date dates) {
 		
 		Pendapatan pendapatan = new Pendapatan();
-		BigDecimal finalPresentaseGaji = new BigDecimal(0), umkPenempatan;
+		BigDecimal presentaseGaji = new BigDecimal(0), umkPenempatan;
 		BigDecimal bigDecimal = new BigDecimal(0);
 		int jumlah = 0;
 		
 		umkPenempatan = karyawan.getPenempatan().getUmkPenempatan();
-		finalPresentaseGaji = calculationPresentaseGaji(karyawan);
+		presentaseGaji = calculationPresentaseGaji(karyawan);
 		
 		pendapatan.setKaryawan(karyawan);
 		pendapatan.setTanggalGaji(dates);
-		pendapatan.setGajiPokok(calculationGajiPokok(finalPresentaseGaji, umkPenempatan));
+		pendapatan.setGajiPokok(calculationGajiPokok(presentaseGaji, umkPenempatan));
 		pendapatan.setTunjanganKeluarga(calculationTunjanganKeluarga(pendapatan.getGajiPokok(), karyawan));
 		pendapatan.setTunjanganPegawai(calculationTunjanganPegawai(karyawan));
 		pendapatan.setTunjanganTransport(calculationTunjanganTransport(karyawan));
@@ -296,5 +296,34 @@ public class CalculationSalaryController {
 		
 		return BigDecimal.valueOf(takeHomePay);
 	}
+	
+	// Calculate pph perbulan
+    public BigDecimal pphPerbulan() {
+        return BigDecimal.valueOf(0);
+    }
+    
+    
+ // lama lembur
+    public BigDecimal lamaLembur() {
+        return BigDecimal.valueOf(0);
+    }
+    
+    
+    // uang lembur
+    public BigDecimal uangLembur() {
+        return BigDecimal.valueOf(0);
+    }
+    
+    
+    // variable bonus
+    public BigDecimal variableBonus() {
+        return BigDecimal.valueOf(0);
+    }
+    
+    
+    // uang bonus
+    public BigDecimal uangBonus() {
+        return BigDecimal.valueOf(0);
+    }
 
 }

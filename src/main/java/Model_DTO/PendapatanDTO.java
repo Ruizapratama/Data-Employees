@@ -8,7 +8,7 @@ import com.Employee.DataEmployee.model.Karyawan;
 public class PendapatanDTO {
 	
 	private Long idPendapatan;
-	private Karyawan karyawan;
+	private KaryawanDTO karyawan;
 	private Date tanggalGaji;
 	private BigDecimal gajiPokok;
 	private BigDecimal tunjanganKeluarga;
@@ -33,10 +33,10 @@ public class PendapatanDTO {
 	}
 	
 	
-	public Karyawan getKaryawan() {
+	public KaryawanDTO getKaryawan() {
 		return karyawan;
 	}
-	public void setKaryawan(Karyawan karyawan) {
+	public void setKaryawan(KaryawanDTO karyawan) {
 		this.karyawan = karyawan;
 	}
 	
