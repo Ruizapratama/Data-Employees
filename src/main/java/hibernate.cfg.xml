@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.password">almiera</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/Employee</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.search.autoregister_listeners">true</property>
+        <property name="hibernate.validator.apply_to_ddl">false</property>
+        <mapping class="com.Employee.DataEmployee.ParameterPajak" />
+        <mapping class="com.Employee.DataEmployee.PresentaseGaji" />
+        <mapping class="com.Employee.DataEmployee.TunjanganPegawai" />
+        <mapping class="com.Employee.DataEmployee.Penempatan" />
+        <mapping class="com.Employee.DataEmployee.Karyawan" />
+        <mapping class="com.Employee.DataEmployee.Pendapatan" />
+        <mapping class="com.Employee.DataEmployee.Agama" />
+        <mapping class="com.Employee.DataEmployee.ListKemampuan" />
+        <mapping class="com.Employee.DataEmployee.Parameter" />
+        <mapping class="com.Employee.DataEmployee.Posisi" />
+        <mapping class="com.Employee.DataEmployee.Kemampuan" />
+        <mapping class="com.Employee.DataEmployee.User" />
+        <mapping class="com.Employee.DataEmployee.Tingkatan" />
+        <mapping class="com.Employee.DataEmployee.KategoriKemampuan" />
+    </session-factory>
+</hibernate-configuration>
