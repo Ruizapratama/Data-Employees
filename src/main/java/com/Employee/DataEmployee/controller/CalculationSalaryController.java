@@ -60,6 +60,7 @@ public class CalculationSalaryController {
 		Map<String, Object> result = new HashMap<String,Object>();
 		Map<String, Object> result2 = new HashMap<String, Object>();
 		List<Pendapatan> listPendapatan = pendapatanRepository.findAll();
+		List<Pendapatan> listPendapatanByDate = new ArrayList<Pendapatan>();
 		
         LocalDate myDate =LocalDate.parse(inputDate);
         Date date = Date.from(myDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
@@ -72,15 +73,19 @@ public class CalculationSalaryController {
 		else {
 			for (Pendapatan pendapatan : listPendapatan) {
 				if (pendapatan.getTanggalGaji().getYear() == date.getYear() && pendapatan.getTanggalGaji().getMonth() == date.getMonth()) {
-					updatePendapatan(date, pendapatan);
+					listPendapatanByDate.add(pendapatan);
 				
 				}
-				else {
-					inputData = false;
-				}
 			}
-			if (!inputData) {
+			
+			if (listPendapatanByDate.isEmpty()) {
 				newPendapatan(date);
+			}
+			else {
+				
+				for (Pendapatan pendapatan : listPendapatanByDate) {
+					updatePendapatan(date, pendapatan);
+				}
 			}
 		}
 		
